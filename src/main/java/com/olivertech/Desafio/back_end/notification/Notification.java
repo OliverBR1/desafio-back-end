@@ -1,4 +1,5 @@
 package com.olivertech.Desafio.back_end.notification;
 
-public class Notification {
+public record Notification(
+    boolean message) {
 }
