@@ -16,6 +16,6 @@ public record Transaction(
         @CreatedDate LocalDateTime createdAt) {
 
     public Transaction {
-        value = value.setScale(newScale:2);
+        value = value.setScale(2);
     }
 }

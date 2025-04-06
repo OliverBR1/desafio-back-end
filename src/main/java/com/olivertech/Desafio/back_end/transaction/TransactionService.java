@@ -8,6 +8,8 @@ import com.olivertech.Desafio.back_end.wallet.WalletType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TransactionService {
 
@@ -32,8 +34,10 @@ public class TransactionService {
 
         var newTransaction = transactionRepository.save(transaction);
 
-        var wallet = walletRepository.findById(transaction.payer()).get();
-        walletRepository.save(wallet.debit(transaction.value()));
+        var walletPayer = walletRepository.findById(transaction.payer()).get();
+        var walletPayee = walletRepository.findById(transaction.payee()).get();
+        walletRepository.save(walletPayer.debit(transaction.value()));
+        walletRepository.save(walletPayee.credit(transaction.value()));
 
         authorizerService.authorize(transaction);
 
@@ -55,5 +59,9 @@ public class TransactionService {
         return payer.type() == WalletType.COMMON.getValue() &&
                 payer.balance().compareTo(transaction.value()) >= 0 &&
                 !payer.id().equals(transaction.payee());
+    }
+
+    public List<Transaction> list() {
+        return transactionRepository.findAll();
     }
 }
