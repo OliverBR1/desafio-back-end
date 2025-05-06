@@ -13,13 +13,14 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+    @GetMapping
+    public List<Transaction> list() {
+        return transactionService.list();
+    }
+
     @PostMapping
     public Transaction createTransaction(@RequestBody Transaction transaction) {
         return transactionService.create(transaction);
     }
 
-    @GetMapping
-    public List<Transaction> list() {
-        return transactionService.list();
-    }
 }

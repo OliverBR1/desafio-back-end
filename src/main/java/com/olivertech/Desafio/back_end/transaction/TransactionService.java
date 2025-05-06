@@ -30,7 +30,6 @@ public class TransactionService {
 
     @Transactional
     public Transaction create(Transaction transaction) {
-
         validate(transaction);
 
         var newTransaction = transactionRepository.save(transaction);
@@ -41,7 +40,6 @@ public class TransactionService {
         walletRepository.save(walletPayee.credit(transaction.value()));
 
         authorizerService.authorize(transaction);
-
         notificationService.notify(transaction);
 
         return newTransaction;
